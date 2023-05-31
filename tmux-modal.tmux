@@ -364,32 +364,24 @@ if [ "$START_OPT_VAL" == on ]; then
     tmux set-option -g key-table $KT_CMD
 fi
 
-# Prepend left status bar with KT_CMD_ICON if our key tables are in use.
-# Determine this by checking if current key table starts with our prefix.
-KT_CMD_ICON="[=]"
-STATUS_LEFT=`
-`'#{'`
-  `'?#{==:'$KT_PREFIX'-,'`
-     `'#{='$((${#KT_PREFIX} + 1))':client_key_table}'`
-    `'},'`
-   `$KT_CMD_ICON' ,'`
-`'}'
-
 if [ "$SHOW_CMD_KEYS_VAL" == on ]; then
     # Check which key table is in use and use corresponding "icon" in the left
     # status bar. The icons are derived from the keybindings.
-    KT_WIN_ICON="[$KBD_WIN]"
-    KT_WIN_PANE_ICON="[$KBD_WIN$KBD_WIN_PANE]"
-    KT_WIN_SPLIT_ICON="[$KBD_WIN$KBD_WIN_SPLIT]"
-    KT_WIN_MOVE_ICON="[$KBD_WIN$KBD_WIN_MOVE]"
-    KT_WIN_ARRANGE_ICON="[$KBD_WIN$KBD_WIN_ARRANGE]"
-    KT_WIN_RESIZE_ICON="[$KBD_WIN$KBD_WIN_RESIZE]"
+    KT_CMD_ICON="#[bg=white]  MODE  #[default]"
+    KT_TMUX_ICON="#[bg=green]  TMUX  #[default]"
+    KT_PREFIX_ICON="#[bg=red]  PRFX  #[default]"
+    KT_WIN_ICON="#[bg=yellow]  WNDW  #[default]"
+    KT_WIN_PANE_ICON="#[bg=cyan]  PANE  #[default]"
+    KT_WIN_SPLIT_ICON="#[bg=cyan]  SPLT  #[default]"
+    KT_WIN_MOVE_ICON="#[bg=blue]  MOVE  #[default]"
+    KT_WIN_ARRANGE_ICON="#[bg=blue]  ARNG  #[default]"
+    KT_WIN_RESIZE_ICON="#[bg=blue]  SIZE  #[default]"
 
-    KT_SESS_ICON="[$KBD_SESS]"
+    KT_SESS_ICON="#[bg=red]  SESN  #[default]"
 
-    KT_GOTO_ICON="[$KBD_GOTO]"
-    KT_GOTO_WIN_ICON="[$KBD_GOTO$KBD_GOTO_WIN]"
-    KT_GOTO_SESS_ICON="[$KBD_GOTO$KBD_GOTO_SESS]"
+    KT_GOTO_ICON="#[bg=white]  GOTO  #[default]"
+    KT_GOTO_WIN_ICON="#[bg=yellow]  GWIN  #[default]"
+    KT_GOTO_SESS_ICON="#[bg=red]  GSES  #[default]"
 
     # Seems to be the only way to to do if-elseif-...-else in tmux format
     # syntax...
@@ -449,14 +441,12 @@ if [ "$SHOW_CMD_KEYS_VAL" == on ]; then
          `'#{client_key_table}'`
         `'},'`
        `$KT_GOTO_SESS_ICON' ,'`
-    `'}}}}}}}}}}}'
+    `'#{'`
+     `'?client_prefix,'`
+         `$KT_PREFIX_ICON' ,'`
+         `$KT_TMUX_ICON''`
+    `'}}}}}}}}}}}}'
 fi
 
-# We want to set the left status bar once; do it only if we can't find our
-# status string in current status (otherwise we would create several icons next
-# to each other, which could happen if this is run back to back multiple times
-# somehow).
-CURRENT_STATUS_LEFT=$(tmux show-options -g -v status-left)
-if ! grep -q -F "$STATUS_LEFT" <<< "$CURRENT_STATUS_LEFT"; then
-    tmux set-option -g status-left "$STATUS_LEFT""$CURRENT_STATUS_LEFT"
-fi
+# Set a generic string if no option is set
+tmux set-option -g status-left "#[fg=black]$STATUS_LEFT"
