@@ -274,6 +274,9 @@ feedback in the status bar during tmux-modal command sequences:
 ```
 set -g @modal-show-cmd-keys on
 ```
+```
+#MODAL_STATUS_LEFT is the text that gets replaced
+```
 
 The left status bar will now update to match the tmux-modal command currently in
 use. For example, if you press `w` the status bar will change from the modal

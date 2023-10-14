@@ -390,63 +390,65 @@ if [ "$SHOW_CMD_KEYS_VAL" == on ]; then
       `'?#{==:'$KT_CMD','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_CMD_ICON' ,'`
+       `$KT_CMD_ICON','`
     `'#{'`
       `'?#{==:'$KT_WIN','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_ICON' ,'`
+       `$KT_WIN_ICON','`
     `'#{'`
       `'?#{==:'$KT_WIN_PANE','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_PANE_ICON' ,'`
+       `$KT_WIN_PANE_ICON','`
     `'#{'`
      `'?#{==:'$KT_WIN_SPLIT','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_SPLIT_ICON' ,'`
+       `$KT_WIN_SPLIT_ICON','`
     `'#{'`
      `'?#{==:'$KT_WIN_MOVE','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_MOVE_ICON' ,'`
+       `$KT_WIN_MOVE_ICON','`
     `'#{'`
      `'?#{==:'$KT_WIN_ARRANGE','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_ARRANGE_ICON' ,'`
+       `$KT_WIN_ARRANGE_ICON','`
     `'#{'`
      `'?#{==:'$KT_WIN_RESIZE','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_WIN_RESIZE_ICON' ,'`
+       `$KT_WIN_RESIZE_ICON','`
     `'#{'`
      `'?#{==:'$KT_SESS','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_SESS_ICON' ,'`
+       `$KT_SESS_ICON','`
     `'#{'`
      `'?#{==:'$KT_GOTO','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_GOTO_ICON' ,'`
+       `$KT_GOTO_ICON','`
     `'#{'`
      `'?#{==:'$KT_GOTO_WIN','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_GOTO_WIN_ICON' ,'`
+       `$KT_GOTO_WIN_ICON','`
     `'#{'`
      `'?#{==:'$KT_GOTO_SESS','`
          `'#{client_key_table}'`
         `'},'`
-       `$KT_GOTO_SESS_ICON' ,'`
+       `$KT_GOTO_SESS_ICON','`
     `'#{'`
      `'?client_prefix,'`
-         `$KT_PREFIX_ICON' ,'`
+         `$KT_PREFIX_ICON','`
          `$KT_TMUX_ICON''`
     `'}}}}}}}}}}}}'
 fi
 
 # Set a generic string if no option is set
-tmux set-option -g status-left "#[fg=black]$STATUS_LEFT"
+TMUX_STATUS_LEFT=$(tmux show-options -gvq status-left)
+TMUX_STATUS_LEFT=${TMUX_STATUS_LEFT//\#MODAL_STATUS_LEFT/$STATUS_LEFT}
+tmux set-option -g status-left "$TMUX_STATUS_LEFT"
